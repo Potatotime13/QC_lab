@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 
 def main():
+    # Load Data
     additional_stocks = ['MSFT', 'GOOG', 'FB', 'AAPL','VOW.DE']
     stocks = ['ANZ.AX', 'AMC.AX', 'BHP.AX', 'BXB.AX', 'CBA.AX', 'CSL.AX', 'IAG.AX',]
     first_stock = 'AMP.AX'
@@ -23,7 +24,8 @@ def main():
         data[stock] = yf.download(stock, start=start_d, end=end_d)[price]
 
     data = data_cleaner(data)
-
+    
+    # get classic portfolio optimization solution
     data_mat = data.to_numpy()
     revenues = (data_mat[1:, :] / data_mat[:-1,:])-1
     revenues_mean = np.expand_dims(np.mean(revenues, axis=0), axis=0)
@@ -31,6 +33,7 @@ def main():
 
     weights = (1-risk)/(2*risk)*np.linalg.inv(variance) @ (revenues_mean.T)
 
+    # create combinatorial solutions and compare to true minima
     results = []
     solutions = []
     for i in range(Amin,Amax):
@@ -40,6 +43,7 @@ def main():
         solutions.append(sol)
         results.append([min_[0,0], eval_weights(con_w, revenues_mean, variance, risk)[0,0]])
     
+    # plot results
     results = np.array(results)
     rel_dist = 1 - (results[:,1]-results[:,0])/abs(results[:,0])
     plot = np.array([rel_dist,np.arange(Amin,Amax,1)])
