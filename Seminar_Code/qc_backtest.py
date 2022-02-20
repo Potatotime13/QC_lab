@@ -54,12 +54,13 @@ def main():
     plt.xlabel('A', fontsize=16)
     plt.xticks(np.arange(Amin,Amax,1))
     plt.show()
-    plt.subplots(figsize=(10,8))
-    plt.scatter(np.arange(Amin,Amax,1),results[:,1])
-    plt.scatter(np.arange(Amin,Amax,1),results[:,0])
+    plt.subplots(figsize=(10,5))
+    plt.scatter(np.arange(Amin,Amax,1),results[:,1], label='Approximierung')
+    plt.scatter(np.arange(Amin,Amax,1),results[:,0], label='Minimum')
     plt.plot(np.arange(Amin,Amax,1),np.ones(results.shape[0])*abs_min)
     plt.ylabel('Kostenfunktion', fontsize=16)
     plt.xlabel('A', fontsize=16)
+    plt.legend(fontsize=16)
     plt.show()
     
 
